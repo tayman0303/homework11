@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Knewave&family=Roboto:ital,wght@0,100..900;1,100..900&family=WDXL+Lubrifont+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Knewave&family=Redaction+50:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&family=WDXL+Lubrifont+SC&display=swap');
 
 html, body {
   margin: 0;
@@ -11,6 +12,10 @@ h1{
   font-weight: 600;
   font-style: normal;
   text-align: center;
+}
+p1{
+  color: red;
+
 }
 canvas {
   display: block;
