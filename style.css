@@ -13,9 +13,15 @@ h1{
   font-style: normal;
   text-align: center;
 }
-p1{
+p{
   color: red;
-
+  font-family:"Redaction 50", serif;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+}
+script{
+  text-align: center;
 }
 canvas {
   display: block;
