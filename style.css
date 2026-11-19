@@ -21,6 +21,13 @@ p{
   text-align: center;
 }
 
+p1{
+  font-family:"Redaction 50", serif;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+}
+
 canvas {
   display: block;
   margin: auto;
