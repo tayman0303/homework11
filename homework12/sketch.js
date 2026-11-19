@@ -1,38 +1,128 @@
-function setup() {
-  createCanvas(650, 400);
-  rectMode(CENTER);
+let song11, song22, song33;
+let fft; let smoothing = 0.8; let bins = 512;
+let waveform = [];
+let spectrum = [];
+let vol;
+let size = 15;
+let num = 10; 
+let grid = []; let min = 150;
+let distFromCenter = [];
+
+function preload() {
+  song11 = loadSound('AtomicHipHop.mp3');
+  song22 = loadSound('PopLoop.wav');
+  song33 = loadSound('Frutiger.wav');
 }
 
-function draw() {
-  // Dark purple night sky
-  background(33, 1, 36);
 
-  // Moon turning red
-  if (mouseY < 200) {
-    fill(255, 0, 0);
-  } else {
-    fill(193, 189, 114);
+
+
+function setup() 
+{
+  createCanvas(400, 400, WEBGL);
+  fft = new p5.FFT();
+  userStartAudio();
+  song11.setVolume(0.01);
+  song22.setVolume(0.01);
+  song33.setVolume(0.01);
+  
+  let song1Button = createButton("Hellcat");
+  let song2Button = createButton("On & On");
+  let song3Button = createButton("My Heart");
+  let stopButton = createButton("Stop Music")
+  
+  song1Button.mousePressed(song1);
+  song2Button.mousePressed(song2);
+  song3Button.mousePressed(song3);
+  stopButton.mousePressed(stopMusic);
+
+  
+  
+  for(let i=0; i<num; i++)
+  { grid[i] = [];
+    for (let j=0; j<num; j++)
+    { grid[i][j] = []; 
+      for (let k=0; k<num; k++)
+        //FLOOR GIVES CLOSEST INTEGER
+      { grid[i][j][k] = floor(noise(2));
+       
+       let offset = size/2 - num/2*size;
+       let x = i*size + offset;
+       let y = j*size + offset;
+       let z = k*size + offset;
+       let distance = dist(x, y, z, 0,0,0);
+       
+       distFromCenter.push({i,j,k, distance})
+       
+      }
+    }
   }
-  ellipse(width / 2, height / 1, 700);
+  distFromCenter.sort(compareDistances);
+}
 
-  // Buildings
-  fill(64, 4, 78);
-  strokeWeight(3);
-  rect(width / 12.75, height / 1.1255, width / 6.5, height / 2.5);
-  rect(width / 2.358, height * 0.75, width / 3.25, height / 1);
-  rect(width / 4, height / 1.2414, width / 5.2, height / 2);
-  rect(width / 1.677, height / 1.3, width / 5.2, height / 1.5);
-  rect(width / 1.1, height * 0.875, width / 3.75, height / 1);
-  rect(width / 1.3, height * 0.8125, width / 6.5, height / 2);
+function compareDistances(a,b) {
+  return a.distance - b.distance;
+}
 
-  // bus that follows the mouse
-  push();
-  translate(mouseX, mouseY);
-  fill('blue');
-  rect(0, 0, 100, 60);
-  fill('black');
-  rect(0, -20, 100, 10);
-  fill('gold')
-  rect(-35,0,15,10)
-  pop();
+
+function draw() {
+  background(6.7);
+  orbitControl();
+  //rotateX(frameCount/1000);
+  //rotateZ(frameCount/10000);
+  waveform = fft.waveform();
+  spectrum = fft.analyze();
+  let vol = fft.getEnergy(20,140);
+
+  let totalCubes = num*num*num;
+  for (let i=0; i<totalCubes; i++){
+    let pos = distFromCenter[i];
+    let c = map(spectrum[i], 0, 255, min, 255);
+    grid[pos.i][pos.j][pos.k] = c;
+  }
+
+  let offset = size/2 - num/2 * size
+  translate(offset,offset,offset);
+  for(let i=0; i<num; i++)
+  {
+    for (let j=0; j<num; j++)
+    {
+         // rotateZ(frameCount/(vol*100));
+   //rotateX(frameCount/(vol*10000));
+    
+      //rotate(45);
+      for (let k=0; k<num; k++){
+        if (grid[i][j][k] > min) {
+         fill(min*vol,num*vol,k/vol);
+        strokeWeight(0);
+      } else {
+        fill(vol*noise(1,3),vol/i, vol-15);
+      }
+      push();{
+    translate(i*size, j*size, k*size)
+    box(vol/2,vol/10,vol/2);
+      } pop();
+    
+  
+    } 
+  }
+}
+}
+
+function song1(){
+  song11.play();
+}
+
+function song2(){
+  song22.play();
+}
+
+function song3(){
+  song33.play();
+}
+
+function stopMusic(){
+  song11.stop();
+  song22.stop();
+  song33.stop();
 }
