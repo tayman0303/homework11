@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Nova+Square&display=swap');
 
 html, body {
   margin: 0;
@@ -10,8 +10,22 @@ canvas {
 }
 
 h1{
-  font-color: red
+  color: red;
   font-family: "Asimovian", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+p1{
+  color: blue;
+  font-family: "Nova Square", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+p2{
+  color: blue;
+  font-family: "Nova Square", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
